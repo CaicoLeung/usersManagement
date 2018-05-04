@@ -5,10 +5,11 @@
                 {{customer.name}}
                 <span class="pull-right">
                     <router-link to="/" class="btn btn-default">返回</router-link>
-                    <router-link :to="'/edit/'+customer.id" class="btn btn-primary">编辑</router-link>
-                    <button @click="deleteCustomer(customer.id)" class="btn btn-danger">删除</button>
+                    <router-link :to="'/edit/'+this.$route.params.id" class="btn btn-primary">编辑</router-link>
+                    <button @click="deleteCustomer()" class="btn btn-danger">删除</button>
                 </span>
             </h1>
+            <router-view></router-view>
             <ul class="list-group">
                 <li class="list-group-item">
                     <span class="glyphicon glyphicon-user">
@@ -57,21 +58,29 @@ export default {
   name: "customerDetails",
   data() {
     return {
-      customer: ""
+      customer: {}
     };
   },
   methods: {
     fetchCustomers(id) {
-      this.$http.get("http://localhost:3000/users/" + id).then(response => {
-        this.customer = response.body;
-        // console.log(this.customer);
-      });
-    },
-    deleteCustomer(id){
-        // console.log(id);
-        this.$http.delete("http://localhost:3000/users/" + id).then(response =>{
-            this.$router.push({path:"/",query:{test:"用户信息删除成功"}});
+      this.$http.get("https://usersmanagement-b89cc.firebaseio.com/users/"+ id +".json")
+        .then(response => {
+            return response.json();
+            // console.log(this.customer);
+         })
+        .then(data => {
+            this.customer = data;
         })
+    },
+    deleteCustomer(){
+        var yesno = confirm("删除后数据不可恢复！");
+        if(yesno){
+            var id = this.$route.params.id;
+            this.$http.delete("https://usersmanagement-b89cc.firebaseio.com/users/"+ id +".json")
+                .then(response =>{
+                    this.$router.push({path:"/",query:{test:"用户信息删除成功"}});
+                })
+        }
     }
   },
   created() {

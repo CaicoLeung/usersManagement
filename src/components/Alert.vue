@@ -4,6 +4,7 @@
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         {{message}}
     </div>
+    <router-view></router-view>
   </div>
 </template>
 

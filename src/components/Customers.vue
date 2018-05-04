@@ -8,21 +8,21 @@
       <table class="table table-striped">
         <thead>
           <tr class="text-center">
-            <th>序号</th>
             <th>姓名</th>
             <th>年龄</th>
             <th>电话</th>
             <th>邮箱</th>
+            <th>职位</th>
             <th>详情</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(customer,index) of filterBy(customers,filterInput)" :key="index">
-            <td>{{customer.id}}</td>
             <td>{{customer.name}}</td>
             <td>{{customer.age}}</td>
             <td>{{customer.phone}}</td>
             <td>{{customer.email}}</td>
+            <td>{{customer.profession}}</td>
             <td><router-link :to="'customers/'+customer.id" class="btn btn-info">查看</router-link></td>
           </tr>
         </tbody>
@@ -46,11 +46,20 @@ export default {
     }
   },
   methods: {
-    fetchCustomers(){
-      this.$http.get("http://localhost:3000/users")
+    fetchCustomer(){
+      this.$http.get("https://usersmanagement-b89cc.firebaseio.com/users.json")
         .then(response=>{
-          this.customers = response.body;
-          console.log(this.customers);
+          return response.json();
+          // console.log(response.json());
+        })
+        .then(data=>{
+          var usersArray = [];
+          for(let key in data){
+            data[key].id = key;
+            usersArray.push(data[key]);
+          }
+          this.customers = usersArray;
+          // console.log(this.customers);
         })
     },
     filterBy(customers,value){
@@ -66,11 +75,8 @@ export default {
         $("#alert").css({"display":"none"});
       },3000)
     }
-    this.fetchCustomers();
-  },
-  // updated(){
-  //   this.fetchCustomers();
-  // }
+    this.fetchCustomer();
+  }
 }
 </script>
 

@@ -1,10 +1,11 @@
 <template>
     <div id="edit" class="container">
-        <h1 class="page-header">添加用户</h1>
+        <h1 class="page-header">编辑用户</h1>
+        <router-view></router-view>
         <form @submit="updateCutomer">
             <div class="well">
                 <h4>
-                    用户信息
+                    <strong>{{customer.name}}</strong>
                     <router-link to="/" class="btn btn-default pull-right">返回</router-link>
                 </h4>
                 <div class="form-group">
@@ -55,7 +56,8 @@ export default {
   },
   methods: {
     fetchCustomer(id){
-        this.$http.get("http://localhost:3000/users/"+id)
+        console.log(id);
+        this.$http.get("https://usersmanagement-b89cc.firebaseio.com/users/"+ id +".json")
             .then(response => {
                 this.customer = response.body;
             })
@@ -65,16 +67,16 @@ export default {
             alert("姓名、年龄、电话、邮箱不能为空！");
       } else {
         let updateCutomer = {
-          name: this.customer.name,
-          age: this.customer.age,
-          phone: this.customer.phone,
-          email: this.customer.email,
-          education: this.customer.education,
-          graduationschool: this.customer.graduationschool,
-          profession: this.customer.profession,
-          profile: this.customer.profile
+            name: this.customer.name,
+            age: this.customer.age,
+            phone: this.customer.phone,
+            email: this.customer.email,
+            education: this.customer.education,
+            graduationschool: this.customer.graduationschool,
+            profession: this.customer.profession,
+            profile: this.customer.profile
         };
-        this.$http.put("http://localhost:3000/users/" + this.$route.params.id,updateCutomer)
+        this.$http.put("https://usersmanagement-b89cc.firebaseio.com/users/"+ this.$route.params.id +".json",updateCutomer)
           .then(response => {
             this.$router.push({path:"/",query:{test:"用户信息更新成功"}});
           });
@@ -91,6 +93,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+strong{
+    color: red;
+}
 ._formControl {
   min-width: 100%;
   max-width: 100%;

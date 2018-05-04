@@ -1,5 +1,6 @@
 <template>
   <div id="about">
+    <router-view></router-view>
     <div class="container">
       <h1 class="page-header">欢迎使用 用户管理系统！</h1>
       <p class="text">感谢您使用我们的产品和服务（下称“服务”）。服务由 Google LLC（下称“Google”）提供，总部地址为：1600 Amphitheatre Parkway, Mountain View, CA 94043, United States。</p>

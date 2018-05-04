@@ -1,6 +1,7 @@
 <template>
   <div id="add" class="container">
     <h1 class="page-header">编辑用户</h1>
+    <router-view></router-view>
     <form @submit="addCutomers">
         <div class="well">
             <h4>用户信息</h4>
@@ -65,7 +66,7 @@ export default {
                   profession:this.customer.profession,
                   profile:this.customer.profile
               }
-              this.$http.post("http://localhost:3000/users",newCustomer)
+              this.$http.post("https://usersmanagement-b89cc.firebaseio.com/users.json",newCustomer)
                 .then((response) => {
                     this.$router.push({path:"/",query:{test:"用户信息添加成功"}})
                 })
